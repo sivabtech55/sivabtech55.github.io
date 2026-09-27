@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sivanagaraju Borraju - Data Engineer Portfolio</title>
+<meta name="description" content="Sivanagaraju Borraju, Data Engineer with 5+ years building enterprise data pipelines on Azure Databricks, PySpark, Snowflake, Kafka and Airflow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  :root {
+    --bg: #070d1a;
+    --bg-2: #0c1528;
+    --card: #101c33;
+    --card-2: #13223d;
+    --line: #1e2f4d;
+    --text: #eaf1fb;
+    --muted: #93a4c0;
+    --blue: #2f8cff;
+    --cyan: #22d3ee;
+    --grad: linear-gradient(135deg, #2f8cff 0%, #22d3ee 100%);
+    --radius: 18px;
+    --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5, .logo, .btn { font-family: "Poppins", sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; }
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* ---------- NAV ---------- */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    transition: background .3s, border-color .3s;
+    border-bottom: 1px solid transparent;
+  }
+  .navbar.scrolled { background: rgba(7, 13, 26, .88); backdrop-filter: blur(12px); border-color: var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .logo { font-weight: 700; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+  .logo-mark {
+    width: 38px; height: 38px; border-radius: 10px; background: var(--grad);
+    display: grid; place-items: center; font-weight: 800; font-size: .95rem; color: #041022;
+  }
+  .nav-links { display: flex; gap: 30px; list-style: none; font-size: .95rem; font-weight: 500; }
+  .nav-links a { color: var(--muted); transition: color .2s; position: relative; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--grad); border-radius: 2px;
+  }
+  .nav-cta { display: flex; align-items: center; gap: 12px; }
+  .menu-btn { display: none; background: none; border: 0; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+  .mobile-menu {
+    display: none; flex-direction: column; gap: 4px; padding: 12px 20px 20px;
+    background: rgba(7, 13, 26, .97); border-bottom: 1px solid var(--line);
+  }
+  .mobile-menu a { padding: 10px 0; color: var(--muted); border-bottom: 1px solid var(--line); }
+  .mobile-menu.open { display: flex; }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; border-radius: 12px;
+    font-weight: 600; font-size: .95rem; transition: transform .2s, box-shadow .2s, background .2s; border: 1px solid transparent; cursor: pointer;
+  }
+  .btn-primary { background: var(--grad); color: #041022; box-shadow: 0 10px 30px -10px rgba(47, 140, 255, .7); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 34px -10px rgba(47, 140, 255, .8); }
+  .btn-outline { border-color: var(--line); color: var(--text); background: rgba(255,255,255,.02); }
+  .btn-outline:hover { border-color: var(--blue); color: var(--cyan); transform: translateY(-3px); }
+  .btn-sm { padding: 9px 18px; font-size: .88rem; }
+
+  /* ---------- HERO ---------- */
+  .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding: 120px 0 80px; overflow: hidden; }
+  .hero-glow {
+    position: absolute; width: 620px; height: 620px; border-radius: 50%; filter: blur(120px); opacity: .28; z-index: -1;
+  }
+  .glow-1 { background: #2f8cff; top: -160px; right: -120px; }
+  .glow-2 { background: #22d3ee; bottom: -220px; left: -200px; opacity: .16; }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: -1; opacity: .35;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 60% 40%, black 0%, transparent 65%);
+  }
+  .hero-inner { display: grid; grid-template-columns: 1.15fr .85fr; gap: 50px; align-items: center; }
+  .hello { color: var(--cyan); font-weight: 600; font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .hello::before { content: ""; width: 28px; height: 2px; background: var(--grad); }
+  .hero h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1.08; font-weight: 800; letter-spacing: -.02em; }
+  .hero h2 { font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 600; margin-top: 10px; color: var(--muted); min-height: 1.5em; }
+  .typed { color: var(--text); }
+  .cursor { display: inline-block; width: 3px; height: 1em; background: var(--cyan); margin-left: 4px; vertical-align: -3px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero p.lead { color: var(--muted); font-size: 1.08rem; max-width: 560px; margin-top: 20px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+  .socials { display: flex; gap: 12px; margin-top: 34px; }
+  .social {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.05rem;
+    background: var(--card); border: 1px solid var(--line); color: var(--muted); transition: .2s;
+  }
+  .social:hover { color: #041022; background: var(--grad); border-color: transparent; transform: translateY(-3px); }
+
+  /* hero visual card */
+  .hero-card {
+    background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line);
+    border-radius: 24px; padding: 28px 28px 64px; box-shadow: var(--shadow); position: relative;
+  }
+  .hero-card .dots { display: flex; gap: 7px; margin-bottom: 20px; }
+  .hero-card .dots span { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+  .hero-card .dots span:nth-child(2) { background: #febc2e; }
+  .hero-card .dots span:nth-child(3) { background: #28c840; }
+  .code { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: .86rem; line-height: 1.9; color: var(--muted); }
+  .code .k { color: #c792ea; } .code .f { color: #82aaff; } .code .s { color: #c3e88d; } .code .c { color: #546e8a; } .code .n { color: #f78c6c; }
+  .badge-float {
+    position: absolute; background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow); font-size: .85rem; animation: float 5s ease-in-out infinite;
+  }
+  .badge-float i { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--grad); color: #041022; }
+  .badge-float b { display: block; font-family: "Poppins"; font-size: 1rem; }
+  .badge-float span { color: var(--muted); font-size: .78rem; }
+  .bf-1 { top: -22px; right: -18px; }
+  .bf-2 { bottom: -26px; left: -24px; animation-delay: 1.5s; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 100px 0; position: relative; }
+  .section-head { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+  .eyebrow { display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan);
+    padding: 6px 14px; border-radius: 999px; background: rgba(34, 211, 238, .08); border: 1px solid rgba(34, 211, 238, .2); margin-bottom: 16px; }
+  .section-head h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 700; line-height: 1.2; }
+  .section-head p { color: var(--muted); margin-top: 12px; font-size: 1.03rem; }
+  .alt { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  /* ---------- PIPELINE FLOW ---------- */
+  .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; position: relative; }
+  .flow::before {
+    content: ""; position: absolute; top: 44px; left: 8%; right: 8%; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--blue) 0 10px, transparent 10px 20px); opacity: .5; z-index: 0;
+    animation: dash 1.2s linear infinite; background-size: 20px 2px;
+  }
+  @keyframes dash { to { background-position: 20px 0; } }
+  .flow-step { text-align: center; position: relative; z-index: 1; }
+  .flow-icon {
+    width: 88px; height: 88px; margin: 0 auto 18px; border-radius: 22px; display: grid; place-items: center; font-size: 1.9rem;
+    background: var(--card); border: 1px solid var(--line); color: var(--cyan); transition: .3s; box-shadow: var(--shadow);
+  }
+  .flow-step:hover .flow-icon { background: var(--grad); color: #041022; transform: translateY(-6px) rotate(-4deg); }
+  .flow-step .num { font-size: .72rem; font-weight: 700; letter-spacing: .12em; color: var(--blue); }
+  .flow-step h4 { font-size: 1.08rem; margin: 2px 0 4px; }
+  .flow-step .tool { font-size: .86rem; color: var(--text); font-weight: 500; }
+  .flow-step p { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; align-items: center; }
+  .about-text h2 { font-size: clamp(1.9rem, 4vw, 2.5rem); margin-bottom: 18px; line-height: 1.2; }
+  .about-text p { color: var(--muted); margin-bottom: 14px; font-size: 1.02rem; }
+  .about-text p strong { color: var(--text); font-weight: 600; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; transition: .3s;
+  }
+  .stat-card:hover { border-color: var(--blue); transform: translateY(-4px); }
+  .stat-card i { font-size: 1.3rem; color: var(--cyan); margin-bottom: 12px; display: block; }
+  .stat-card b { font-family: "Poppins"; font-size: 1.9rem; font-weight: 700; display: block; line-height: 1.1; }
+  .stat-card b.small { font-size: 1.15rem; padding: 6px 0; }
+  .stat-card span { color: var(--muted); font-size: .88rem; }
+
+  /* ---------- SKILLS ---------- */
+  .skill-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .skill {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 12px;
+    text-align: center; transition: .3s; cursor: default;
+  }
+  .skill i { font-size: 1.9rem; margin-bottom: 12px; display: block; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .skill span { font-weight: 500; font-size: .92rem; }
+  .skill:hover { transform: translateY(-6px); border-color: var(--blue); box-shadow: 0 16px 34px -18px rgba(47,140,255,.6); }
+  .more-skills { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .more-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .more-card h4 { font-size: .98rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .more-card h4 i { color: var(--cyan); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: .78rem; padding: 5px 11px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); color: var(--muted); }
+
+  /* ---------- EXPERIENCE (timeline) ---------- */
+  .timeline { position: relative; max-width: 900px; margin: 0 auto; padding-left: 36px; }
+  .timeline::before { content: ""; position: absolute; left: 11px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(var(--blue), transparent); }
+  .t-item { position: relative; margin-bottom: 32px; }
+  .t-item::before {
+    content: ""; position: absolute; left: -33px; top: 26px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--cyan); box-shadow: 0 0 0 5px rgba(34,211,238,.12);
+  }
+  .t-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; transition: .3s; }
+  .t-card:hover { border-color: var(--blue); }
+  .t-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .t-top h3 { font-size: 1.25rem; }
+  .t-top .co { color: var(--cyan); font-weight: 600; font-size: .98rem; }
+  .t-date { font-size: .82rem; color: var(--muted); padding: 6px 12px; border-radius: 999px; background: var(--bg-2); border: 1px solid var(--line); height: fit-content; white-space: nowrap; }
+  .t-card ul { list-style: none; }
+  .t-card li { position: relative; padding-left: 26px; color: var(--muted); margin-bottom: 9px; font-size: .96rem; }
+  .t-card li::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; top: 2px; font-size: .78rem; color: var(--cyan); }
+  .t-card li b { color: var(--text); font-weight: 600; }
+  .t-card .chips { margin-top: 16px; }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .proj {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column; transition: .3s;
+  }
+  .proj:hover { transform: translateY(-8px); border-color: var(--blue); box-shadow: 0 24px 50px -24px rgba(47,140,255,.55); }
+  .proj-banner { height: 150px; position: relative; display: grid; place-items: center; overflow: hidden;
+    background: radial-gradient(circle at 30% 20%, rgba(47,140,255,.45), transparent 60%), radial-gradient(circle at 80% 80%, rgba(34,211,238,.35), transparent 55%), var(--card-2); }
+  .proj-banner i { font-size: 3rem; color: var(--text); opacity: .95; }
+  .proj-banner .metric { position: absolute; bottom: 12px; right: 12px; font-size: .75rem; font-weight: 600; padding: 5px 10px; border-radius: 8px; background: rgba(7,13,26,.7); border: 1px solid var(--line); }
+  .proj-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .proj-body h3 { font-size: 1.15rem; margin-bottom: 10px; }
+  .proj-body p { color: var(--muted); font-size: .93rem; flex: 1; }
+  .proj-body .chips { margin: 16px 0 18px; }
+  .proj-link { color: var(--cyan); font-weight: 600; font-size: .92rem; display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; cursor: pointer; font-family: "Poppins"; padding: 0; }
+  .proj-link i { transition: transform .2s; }
+  .proj-link:hover i { transform: translateX(5px); }
+
+  /* ---------- CERTS & EDU ---------- */
+  .cert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .cert {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;
+    display: flex; gap: 18px; align-items: flex-start; transition: .3s;
+  }
+  .cert:hover { border-color: var(--blue); transform: translateY(-4px); }
+  .cert-icon { flex-shrink: 0; width: 56px; height: 56px; border-radius: 16px; background: var(--grad); display: grid; place-items: center; font-size: 1.4rem; color: #041022; }
+  .cert h5 { font-size: 1.02rem; line-height: 1.35; }
+  .cert p { color: var(--muted); font-size: .88rem; margin-top: 4px; }
+  .cert .tag { display: inline-block; margin-top: 10px; font-size: .72rem; font-weight: 600; color: var(--cyan); letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-box {
+    border-radius: 28px; padding: 64px 40px; text-align: center; position: relative; overflow: hidden;
+    background: radial-gradient(circle at 15% 20%, rgba(47,140,255,.28), transparent 50%), radial-gradient(circle at 85% 80%, rgba(34,211,238,.22), transparent 50%), var(--card);
+    border: 1px solid var(--line);
+  }
+  .contact-box h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); margin-bottom: 12px; }
+  .contact-box > p { color: var(--muted); max-width: 560px; margin: 0 auto 32px; }
+  .contact-cards { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-bottom: 34px; }
+  .c-card { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-radius: 14px; background: rgba(7,13,26,.55); border: 1px solid var(--line); text-align: left; transition: .2s; }
+  .c-card:hover { border-color: var(--cyan); transform: translateY(-3px); }
+  .c-card i { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: var(--grad); color: #041022; }
+  .c-card small { display: block; color: var(--muted); font-size: .75rem; }
+  .c-card span { font-weight: 500; font-size: .93rem; }
+  .quote { margin-top: 10px; font-family: "Poppins"; }
+  .quote h6 { font-size: 1.25rem; font-weight: 600; line-height: 1.4; }
+  .quote .by { color: var(--muted); font-size: .9rem; margin-top: 8px; }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top: 1px solid var(--line); padding: 30px 0; }
+  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: .88rem; }
+  .foot-links { display: flex; gap: 22px; }
+  .foot-links a:hover { color: var(--cyan); }
+
+  /* ---------- BACK TO TOP ---------- */
+  .to-top { position: fixed; right: 22px; bottom: 22px; width: 46px; height: 46px; border-radius: 12px; background: var(--grad); color: #041022;
+    display: grid; place-items: center; opacity: 0; pointer-events: none; transition: .3s; z-index: 40; border: 0; cursor: pointer; }
+  .to-top.show { opacity: 1; pointer-events: auto; }
+
+  /* ---------- MODAL ---------- */
+  .modal { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(3,7,15,.75); backdrop-filter: blur(6px); }
+  .modal.open { display: flex; }
+  .modal-box { background: var(--card); border: 1px solid var(--line); border-radius: 22px; max-width: 640px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 32px; position: relative; animation: pop .25s ease; }
+  @keyframes pop { from { transform: scale(.95); opacity: 0; } }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); color: var(--text); cursor: pointer; font-size: 1rem; }
+  .modal-box h4 { font-size: 1.45rem; margin-bottom: 6px; padding-right: 40px; }
+  .modal-box .sub { color: var(--cyan); font-size: .88rem; font-weight: 600; margin-bottom: 18px; }
+  .modal-box h5 { font-size: .95rem; margin: 18px 0 8px; color: var(--text); }
+  .modal-box p, .modal-box li { color: var(--muted); font-size: .95rem; }
+  .modal-box ul { padding-left: 20px; }
+  .modal-box li { margin-bottom: 6px; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+  /* ---------- REVEAL ---------- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 1024px) {
+    .skill-grid { grid-template-columns: repeat(4, 1fr); }
+    .flow { grid-template-columns: repeat(3, 1fr); row-gap: 36px; }
+    .flow::before { display: none; }
+    .proj-grid, .cert-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 860px) {
+    .nav-links, .nav-cta .btn { display: none; }
+    .menu-btn { display: block; }
+    .hero-inner, .about-grid { grid-template-columns: 1fr; }
+    .hero-card { margin: 30px 10px 0; }
+    .more-skills { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 72px 0; }
+    .skill-grid { grid-template-columns: repeat(2, 1fr); }
+    .flow { grid-template-columns: repeat(2, 1fr); }
+    .proj-grid, .cert-grid { grid-template-columns: 1fr; }
+    .hero-card { display: none; }
+    .contact-box { padding: 44px 20px; }
+    .timeline { padding-left: 28px; }
+    .t-item::before { left: -25px; }
+    .timeline::before { left: 8px; }
+    .foot { justify-content: center; text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="#home" class="logo"><span class="logo-mark">SB</span>Sivanagaraju</a>
+    <ul class="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="Sivanagaraju_Borraju_Resume.pdf" target="_blank" class="btn btn-primary btn-sm"><i class="fa-solid fa-file-arrow-down"></i> Resume</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a>
+    <a href="#projects">Projects</a><a href="#certifications">Certifications</a><a href="#contact">Contact</a>
+    <a href="Sivanagaraju_Borraju_Resume.pdf" target="_blank" style="color:var(--cyan)"><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow glow-1"></div>
+  <div class="hero-glow glow-2"></div>
+  <div class="container hero-inner">
+    <div>
+      <p class="hello">Hello, I'm</p>
+      <h1>Sivanagaraju <span class="grad-text">Borraju</span></h1>
+      <h2><span class="typed" id="typed">Data Engineer</span><span class="cursor"></span></h2>
+      <p class="lead">I design and run enterprise data pipelines that turn raw, high-volume data into trusted, analytics-ready datasets, using Azure Databricks, PySpark, Snowflake, Kafka and Airflow.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-diagram-project"></i> View My Projects</a>
+        <a href="Sivanagaraju_Borraju_Resume.pdf" target="_blank" class="btn btn-outline"><i class="fa-solid fa-download"></i> Download Resume</a>
+      </div>
+      <div class="socials">
+        <a class="social" href="https://www.linkedin.com/in/sivanagaraju09" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a class="social" href="https://github.com/sivabtech55" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a class="social" href="mailto:sivaborraju@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="code">
+<span class="c"># bronze → silver → gold</span><br>
+<span class="k">from</span> pyspark.sql <span class="k">import</span> functions <span class="k">as</span> F<br><br>
+events = (spark.<span class="f">readStream</span><br>
+&nbsp;&nbsp;.<span class="f">format</span>(<span class="s">"kafka"</span>)<br>
+&nbsp;&nbsp;.<span class="f">option</span>(<span class="s">"subscribe"</span>, <span class="s">"billing"</span>)<br>
+&nbsp;&nbsp;.<span class="f">load</span>())<br><br>
+silver = events.<span class="f">dropDuplicates</span>([<span class="s">"event_id"</span>])<br>
+silver.<span class="f">writeStream</span>.<span class="f">format</span>(<span class="s">"delta"</span>)<br>
+&nbsp;&nbsp;.<span class="f">toTable</span>(<span class="s">"silver.billing"</span>)&nbsp;&nbsp;<span class="c"># <span class="n">50K</span> ev/s</span>
+      </div>
+      <div class="badge-float bf-1"><i class="fa-solid fa-bolt"></i><div><b>40% faster</b><span>Spark processing</span></div></div>
+      <div class="badge-float bf-2"><i class="fa-solid fa-shield-halved"></i><div><b>99%+ SLA</b><span>Pipeline reliability</span></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PIPELINE FLOW ================= -->
+<section class="alt" id="pipeline">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">How I Work</span>
+      <h2>From Raw Events to <span class="grad-text">Reliable Insights</span></h2>
+      <p>An end-to-end lakehouse flow I build and operate every day.</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+        <div class="num">01</div><h4>Ingest</h4><div class="tool">Kafka · ADF</div><p>Streams, APIs, files &amp; RDBMS</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-database"></i></div>
+        <div class="num">02</div><h4>Store</h4><div class="tool">ADLS Gen2</div><p>Scalable, secure data lake</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-gears"></i></div>
+        <div class="num">03</div><h4>Transform</h4><div class="tool">Databricks · PySpark</div><p>Batch &amp; Structured Streaming</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="num">04</div><h4>Curate</h4><div class="tool">Delta Lake</div><p>Bronze / Silver / Gold</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-snowflake"></i></div>
+        <div class="num">05</div><h4>Model</h4><div class="tool">Snowflake</div><p>Star schemas &amp; data marts</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon"><i class="fa-solid fa-chart-column"></i></div>
+        <div class="num">06</div><h4>Visualize</h4><div class="tool">Power BI</div><p>Business-ready reporting</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-text reveal">
+      <span class="eyebrow">About Me</span>
+      <h2>Engineering data people <span class="grad-text">can trust</span></h2>
+      <p>I'm a Data Engineer with <strong>5+ years of experience</strong> building enterprise data pipelines, dimensional models and analytical solutions with Python, SQL, PySpark, Azure Databricks, Azure Data Factory, Snowflake and Airflow.</p>
+      <p>At <strong>AT&amp;T</strong>, I build Medallion-architecture pipelines and Kafka streaming workloads, and deliver curated Snowflake data marts that power Power BI reporting. Before that, at <strong>Infosys</strong>, I built reusable PySpark frameworks and migrated legacy workloads to Azure Databricks.</p>
+      <p>I care about the details that make data dependable: data quality checks, reconciliation, governance with Unity Catalog, and CI/CD for every pipeline.</p>
+    </div>
+    <div class="stat-grid reveal">
+      <div class="stat-card"><i class="fa-solid fa-briefcase"></i><b>5+</b><span>Years Experience</span></div>
+      <div class="stat-card"><i class="fa-solid fa-bolt"></i><b>50K/s</b><span>Events Streamed</span></div>
+      <div class="stat-card"><i class="fa-solid fa-gauge-high"></i><b>40%</b><span>Faster Spark Jobs</span></div>
+      <div class="stat-card"><i class="fa-solid fa-location-dot"></i><b class="small">Dallas, TX</b><span>Location</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="alt" id="skills">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Technical Skills</span>
+      <h2>My <span class="grad-text">Tech Stack</span></h2>
+      <p>Tools I use to build, orchestrate and govern data platforms.</p>
+    </div>
+    <div class="skill-grid reveal">
+      <div class="skill"><i class="fa-brands fa-microsoft"></i><span>Azure</span></div>
+      <div class="skill"><i class="fa-solid fa-cubes"></i><span>Databricks</span></div>
+      <div class="skill"><i class="fa-solid fa-fire"></i><span>PySpark</span></div>
+      <div class="skill"><i class="fa-solid fa-snowflake"></i><span>Snowflake</span></div>
+      <div class="skill"><i class="fa-solid fa-industry"></i><span>Data Factory</span></div>
+      <div class="skill"><i class="fa-solid fa-tower-broadcast"></i><span>Kafka</span></div>
+      <div class="skill"><i class="fa-solid fa-wind"></i><span>Airflow</span></div>
+      <div class="skill"><i class="fa-solid fa-layer-group"></i><span>Delta Lake</span></div>
+      <div class="skill"><i class="fa-brands fa-python"></i><span>Python</span></div>
+      <div class="skill"><i class="fa-solid fa-database"></i><span>SQL</span></div>
+      <div class="skill"><i class="fa-solid fa-user-shield"></i><span>Unity Catalog</span></div>
+      <div class="skill"><i class="fa-solid fa-chart-pie"></i><span>Power BI</span></div>
+      <div class="skill"><i class="fa-brands fa-aws"></i><span>AWS</span></div>
+      <div class="skill"><i class="fa-brands fa-google"></i><span>GCP</span></div>
+      <div class="skill"><i class="fa-brands fa-git-alt"></i><span>Git &amp; Jenkins</span></div>
+    </div>
+
+    <div class="more-skills reveal">
+      <div class="more-card">
+        <h4><i class="fa-solid fa-code"></i> Programming</h4>
+        <div class="chips"><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">numpy</span><span class="chip">scikit-learn</span><span class="chip">SQL</span><span class="chip">Spark SQL</span><span class="chip">Java</span><span class="chip">Shell</span></div>
+      </div>
+      <div class="more-card">
+        <h4><i class="fa-solid fa-server"></i> Big Data &amp; Cloud</h4>
+        <div class="chips"><span class="chip">Spark Streaming</span><span class="chip">Hadoop</span><span class="chip">Hive</span><span class="chip">ADLS Gen2</span><span class="chip">Synapse</span><span class="chip">EMR</span><span class="chip">S3</span><span class="chip">Redshift</span><span class="chip">BigQuery</span><span class="chip">Dataflow</span></div>
+      </div>
+      <div class="more-card">
+        <h4><i class="fa-solid fa-sitemap"></i> Modeling &amp; Databases</h4>
+        <div class="chips"><span class="chip">Star Schema</span><span class="chip">Fact &amp; Dimension</span><span class="chip">Data Marts</span><span class="chip">SQL Server</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">Cassandra</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Experience</span>
+      <h2>Where I've <span class="grad-text">Worked</span></h2>
+    </div>
+    <div class="timeline">
+      <div class="t-item reveal">
+        <div class="t-card">
+          <div class="t-top">
+            <div><h3>Data Engineer</h3><div class="co">AT&amp;T · Dallas, TX</div></div>
+            <span class="t-date">Aug 2023 – Present</span>
+          </div>
+          <ul>
+            <li>Architected ETL/ELT pipelines with <b>Azure Databricks, PySpark, Spark SQL and ADF</b>, producing curated datasets for the Snowflake warehouse.</li>
+            <li>Built <b>Kafka + Spark Structured Streaming</b> pipelines processing <b>50K events/sec</b> and 5TB of CRM, billing and payment data, improving job performance by <b>35%</b>.</li>
+            <li>Engineered <b>bronze, silver and gold</b> layers on Delta Lake using Medallion Architecture.</li>
+            <li>Designed logical and physical data models and built <b>subject-area data marts in Snowflake</b> for Power BI dashboards.</li>
+            <li>Optimized Spark with partitioning, broadcast joins, caching and AQE, cutting processing time by <b>40%</b>.</li>
+            <li>Implemented data quality and reconciliation checks, reducing downstream reporting issues by <b>30%</b>.</li>
+            <li>Governed access with <b>Unity Catalog</b> and orchestrated jobs with Airflow and Databricks Workflows at <b>99%+ SLA</b>.</li>
+          </ul>
+          <div class="chips"><span class="chip">Databricks</span><span class="chip">Kafka</span><span class="chip">Delta Lake</span><span class="chip">Snowflake</span><span class="chip">Airflow</span><span class="chip">Unity Catalog</span><span class="chip">Jenkins</span><span class="chip">Power BI</span></div>
+        </div>
+      </div>
+      <div class="t-item reveal">
+        <div class="t-card">
+          <div class="t-top">
+            <div><h3>Data Engineer</h3><div class="co">Infosys · India</div></div>
+            <span class="t-date">Apr 2020 – Dec 2022</span>
+          </div>
+          <ul>
+            <li>Built ETL/ELT pipelines with <b>PySpark, Python, SQL, ADF and Snowflake</b> for BI and reporting.</li>
+            <li>Designed <b>dimensional models</b> with fact and dimension tables and PK/FK relational structures.</li>
+            <li>Integrated REST APIs, JSON, flat files and MySQL/PostgreSQL (JDBC) into ADLS and Snowflake.</li>
+            <li>Developed <b>reusable PySpark and SQL frameworks</b>, reducing duplicated engineering effort.</li>
+            <li>Migrated legacy pipelines to <b>Azure Databricks and ADLS</b> while keeping production stable.</li>
+            <li>Automated orchestration with Airflow and CI/CD with Git and Jenkins.</li>
+          </ul>
+          <div class="chips"><span class="chip">PySpark</span><span class="chip">ADF</span><span class="chip">Snowflake</span><span class="chip">Airflow</span><span class="chip">ADLS Gen2</span><span class="chip">Synapse</span><span class="chip">Jenkins</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section class="alt" id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Featured Projects</span>
+      <h2>Things I've <span class="grad-text">Built</span></h2>
+      <p>Highlights from production work. Click a card for the full breakdown.</p>
+    </div>
+    <div class="proj-grid">
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-tower-broadcast"></i><span class="metric">50K events/sec</span></div>
+        <div class="proj-body">
+          <h3>Real-Time Streaming Pipeline</h3>
+          <p>Kafka and Spark Structured Streaming pipeline ingesting CRM, billing and payment events for near-real-time analytics.</p>
+          <div class="chips"><span class="chip">Kafka</span><span class="chip">Structured Streaming</span><span class="chip">Delta Lake</span></div>
+          <button class="proj-link" data-project="0">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-layer-group"></i><span class="metric">Bronze → Gold</span></div>
+        <div class="proj-body">
+          <h3>Medallion Lakehouse &amp; Data Marts</h3>
+          <p>Bronze/silver/gold Delta Lake layers feeding subject-area Snowflake data marts and Power BI dashboards.</p>
+          <div class="chips"><span class="chip">Databricks</span><span class="chip">ADF</span><span class="chip">Snowflake</span><span class="chip">Power BI</span></div>
+          <button class="proj-link" data-project="1">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-gauge-high"></i><span class="metric">40% faster</span></div>
+        <div class="proj-body">
+          <h3>Spark Performance Optimization</h3>
+          <p>Tuned production Spark workloads with partitioning, broadcast joins, caching and Adaptive Query Execution.</p>
+          <div class="chips"><span class="chip">PySpark</span><span class="chip">AQE</span><span class="chip">Partitioning</span></div>
+          <button class="proj-link" data-project="2">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-shield-halved"></i><span class="metric">30% fewer issues</span></div>
+        <div class="proj-body">
+          <h3>Data Quality &amp; Governance Framework</h3>
+          <p>Automated reconciliation, schema validation and duplicate detection, governed with Unity Catalog.</p>
+          <div class="chips"><span class="chip">PySpark</span><span class="chip">Unity Catalog</span><span class="chip">Lineage</span></div>
+          <button class="proj-link" data-project="3">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-clock-rotate-left"></i><span class="metric">99%+ SLA</span></div>
+        <div class="proj-body">
+          <h3>Pipeline Orchestration &amp; CI/CD</h3>
+          <p>Airflow and Databricks Workflows scheduling with dependency management, monitoring, recovery and Jenkins deployments.</p>
+          <div class="chips"><span class="chip">Airflow</span><span class="chip">Databricks Workflows</span><span class="chip">Jenkins</span></div>
+          <button class="proj-link" data-project="4">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+      <article class="proj reveal">
+        <div class="proj-banner"><i class="fa-solid fa-cloud-arrow-up"></i><span class="metric">Legacy → Cloud</span></div>
+        <div class="proj-body">
+          <h3>Legacy Migration to Azure Databricks</h3>
+          <p>Modernized legacy pipelines onto Azure Databricks and ADLS using reusable PySpark and SQL frameworks.</p>
+          <div class="chips"><span class="chip">Azure Databricks</span><span class="chip">ADLS Gen2</span><span class="chip">REST APIs</span></div>
+          <button class="proj-link" data-project="5">View Project <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS & EDUCATION ================= -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Certifications &amp; Education</span>
+      <h2>Credentials &amp; <span class="grad-text">Learning</span></h2>
+    </div>
+    <div class="cert-grid">
+      <div class="cert reveal">
+        <div class="cert-icon"><i class="fa-solid fa-award"></i></div>
+        <div><h5>Microsoft Certified: Fabric Data Engineer Associate</h5><p>Microsoft · Exam DP-700</p><span class="tag">Certification</span></div>
+      </div>
+      <div class="cert reveal">
+        <div class="cert-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div><h5>Master's Degree in Computer Science</h5><p>Lamar University, Beaumont, TX</p><span class="tag">Education</span></div>
+      </div>
+      <div class="cert reveal">
+        <div class="cert-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div><h5>Bachelor's Degree in Computer Science</h5><p>Vignan's Lara Institute of Technology &amp; Science, India</p><span class="tag">Education</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" style="padding-top:20px">
+  <div class="container">
+    <div class="contact-box reveal">
+      <span class="eyebrow">Contact</span>
+      <h2>Let's <span class="grad-text">Connect</span></h2>
+      <p>I'm open to new Data Engineering opportunities and always happy to talk about pipelines, lakehouses and data platforms.</p>
+      <div class="contact-cards">
+        <a class="c-card" href="mailto:sivaborraju@gmail.com"><i class="fa-solid fa-envelope"></i><div><small>Email</small><span>sivaborraju@gmail.com</span></div></a>
+        <a class="c-card" href="https://www.linkedin.com/in/sivanagaraju09" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i><div><small>LinkedIn</small><span>in/sivanagaraju09</span></div></a>
+        <a class="c-card" href="https://github.com/sivabtech55" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i><div><small>GitHub</small><span>sivabtech55</span></div></a>
+      </div>
+      <div class="quote">
+        <h6>Clean data in. <span class="grad-text">Confident decisions out.</span></h6>
+        <div class="by">— Sivanagaraju Borraju</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot">
+    <div>© <span id="yr"></span> Sivanagaraju Borraju. All rights reserved.</div>
+    <div class="foot-links"><a href="#home">Home</a><a href="#about">About</a><a href="#projects">Projects</a><a href="#contact">Contact</a></div>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<!-- ================= PROJECT MODAL ================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal-box">
+    <button class="modal-close" id="mClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    <h4 id="mTitle"></h4>
+    <div class="sub" id="mSub"></div>
+    <p id="mOverview"></p>
+    <h5>What I did</h5>
+    <ul id="mPoints"></ul>
+    <h5>Tech stack</h5>
+    <div class="chips" id="mStack"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary btn-sm" id="mCopy"><i class="fa-regular fa-copy"></i> Copy Overview</button>
+      <button class="btn btn-outline btn-sm" id="mClose2">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- Project details (edit these to add GitHub repo links later) ----------
+  const projects = [
+    {
+      title: "Real-Time Streaming Pipeline",
+      sub: "AT&T · Streaming · Near-real-time analytics",
+      overview: "A Kafka and Spark Structured Streaming pipeline that ingests CRM, billing and payment events at 50K events per second across 5TB of data, landing them in Delta Lake for near-real-time analytics.",
+      points: [
+        "Consumed high-volume Kafka topics with Spark Structured Streaming on Azure Databricks.",
+        "Applied schema validation and de-duplication before writing to Delta tables.",
+        "Tuned micro-batch processing to improve job performance by 35%.",
+        "Fed curated streaming data into downstream Snowflake datasets and Power BI reporting."
+      ],
+      stack: ["Apache Kafka", "Spark Structured Streaming", "Azure Databricks", "Delta Lake", "Python"]
+    },
+    {
+      title: "Medallion Lakehouse & Data Marts",
+      sub: "AT&T · Lakehouse · Dimensional modeling",
+      overview: "An end-to-end lakehouse built on bronze, silver and gold Delta Lake layers, feeding subject-area Snowflake data marts that power Power BI dashboards for business stakeholders.",
+      points: [
+        "Ingested structured and semi-structured data with Azure Data Factory into ADLS Gen2.",
+        "Engineered bronze, silver and gold layers with standardized transformation rules.",
+        "Designed logical and physical models: facts, dimensions, grain and PK/FK relationships.",
+        "Built subject-area data marts in Snowflake for reusable, business-ready reporting."
+      ],
+      stack: ["Azure Data Factory", "ADLS Gen2", "Azure Databricks", "Delta Lake", "Snowflake", "Power BI"]
+    },
+    {
+      title: "Spark Performance Optimization",
+      sub: "AT&T · Performance engineering",
+      overview: "A focused optimization effort on production Spark applications that reduced processing time by 40% through smarter data layout and query execution.",
+      points: [
+        "Re-partitioned large datasets to reduce shuffle and skew.",
+        "Applied broadcast joins for small dimension tables.",
+        "Used caching strategically for reused intermediate datasets.",
+        "Enabled and tuned Adaptive Query Execution (AQE)."
+      ],
+      stack: ["Apache Spark", "PySpark", "Spark SQL", "AQE", "Azure Databricks"]
+    },
+    {
+      title: "Data Quality & Governance Framework",
+      sub: "AT&T · Data quality · Governance",
+      overview: "Automated data quality checks and governance practices that reduced downstream reporting issues by 30% and gave consumers clear ownership, metadata and lineage.",
+      points: [
+        "Built reconciliation, schema validation and duplicate/integrity checks into pipelines.",
+        "Applied Unity Catalog for access control, metadata and lineage.",
+        "Documented dataset ownership and governance standards for downstream consumers.",
+        "Surfaced failures early so bad data never reached reporting layers."
+      ],
+      stack: ["PySpark", "SQL", "Unity Catalog", "Delta Lake", "Azure Databricks"]
+    },
+    {
+      title: "Pipeline Orchestration & CI/CD",
+      sub: "AT&T & Infosys · Reliability · DevOps",
+      overview: "Scheduling, monitoring and deployment automation that keeps data pipelines running on time with 99%+ SLA compliance.",
+      points: [
+        "Orchestrated jobs with Apache Airflow and Databricks Workflows.",
+        "Managed task dependencies, retries, alerting and failure recovery.",
+        "Automated CI/CD for Python, SQL and Spark code using Git and Jenkins.",
+        "Promoted changes consistently across environments within Agile teams."
+      ],
+      stack: ["Apache Airflow", "Databricks Workflows", "Git", "GitHub", "Jenkins"]
+    },
+    {
+      title: "Legacy Migration to Azure Databricks",
+      sub: "Infosys · Modernization",
+      overview: "Modernized legacy data pipelines by moving workloads to Azure Databricks and ADLS Gen2, while keeping production stable throughout the migration.",
+      points: [
+        "Integrated REST APIs, JSON, flat files and MySQL/PostgreSQL (JDBC) sources.",
+        "Built reusable PySpark and SQL transformation frameworks.",
+        "Implemented incremental loading and automated data quality checks.",
+        "Loaded curated data into Snowflake for BI and reporting."
+      ],
+      stack: ["Azure Databricks", "ADLS Gen2", "PySpark", "Azure Data Factory", "Snowflake"]
+    }
+  ];
+
+  // ---------- Modal ----------
+  const modal = document.getElementById("modal");
+  let current = null;
+  document.querySelectorAll("[data-project]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const p = projects[+btn.dataset.project];
+      current = p;
+      document.getElementById("mTitle").textContent = p.title;
+      document.getElementById("mSub").textContent = p.sub;
+      document.getElementById("mOverview").textContent = p.overview;
+      document.getElementById("mPoints").innerHTML = p.points.map(x => `<li>${x}</li>`).join("");
+      document.getElementById("mStack").innerHTML = p.stack.map(x => `<span class="chip">${x}</span>`).join("");
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    });
+  });
+  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+  document.getElementById("mClose").onclick = closeModal;
+  document.getElementById("mClose2").onclick = closeModal;
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+  document.getElementById("mCopy").onclick = async function () {
+    if (!current) return;
+    const text = `${current.title}\n${current.overview}\nTech: ${current.stack.join(", ")}`;
+    try { await navigator.clipboard.writeText(text); this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!'; }
+    catch { this.innerHTML = 'Copy not supported'; }
+    setTimeout(() => this.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Overview', 1800);
+  };
+
+  // ---------- Typing effect ----------
+  const roles = ["Data Engineer", "Azure Databricks Engineer", "PySpark & Snowflake Developer", "Streaming Pipeline Builder"];
+  const typedEl = document.getElementById("typed");
+  let r = 0, c = roles[0].length, deleting = true;
+  function type() {
+    const word = roles[r];
+    typedEl.textContent = word.slice(0, c);
+    if (!deleting && c === word.length) { deleting = true; return setTimeout(type, 1800); }
+    if (deleting && c === 0) { deleting = false; r = (r + 1) % roles.length; }
+    c += deleting ? -1 : 1;
+    setTimeout(type, deleting ? 45 : 85);
+  }
+  setTimeout(type, 2000);
+
+  // ---------- Navbar, active link, back-to-top ----------
+  const navbar = document.getElementById("navbar");
+  const toTop = document.getElementById("toTop");
+  const links = document.querySelectorAll(".nav-links a");
+  const sections = [...document.querySelectorAll("header[id], section[id]")];
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    navbar.classList.toggle("scrolled", y > 30);
+    toTop.classList.toggle("show", y > 600);
+    let active = "home";
+    sections.forEach(s => { if (y >= s.offsetTop - 120) active = s.id; });
+    links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + active));
+  });
+  toTop.onclick = () => window.scrollTo({ top: 0 });
+
+  // ---------- Mobile menu ----------
+  const menu = document.getElementById("mobileMenu");
+  document.getElementById("menuBtn").onclick = () => menu.classList.toggle("open");
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
+
+  // ---------- Scroll reveal ----------
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
